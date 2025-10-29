@@ -23,10 +23,12 @@ const postSlice = createSlice({
             state.posts = action.payload;
             state.error = null
         })
-        builder.addCase(fetchPosts.pending, (state, action) => {
+        builder.addCase(fetchPosts.rejected, (state, action) => {
             state.isLoading = false;
             state.posts = [];
-            state.error = action.payload;
+            state.error = action.error.message;
         })
     }
 })
+
+export default postSlice.reducer;
