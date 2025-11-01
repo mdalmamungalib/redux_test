@@ -10,14 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    // Exclude uploadthing files that cause parsing errors
-    config.externals.push({
-      '@uploadthing/mime-types': 'commonjs @uploadthing/mime-types',
-      '@uploadthing/shared': 'commonjs @uploadthing/shared',
-    });
-    return config;
-  },
+  turbopack: {},
 };
 
 export default nextConfig;

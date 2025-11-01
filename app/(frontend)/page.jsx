@@ -1,10 +1,10 @@
-import Todo from '@/components/Frontend/Todo/Todo';
+import UserManagementDashboard from '@/components/Frontend/UserManagementDashboard/UserManagementDashboard';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-            <Todo/>
+            <UserManagementDashboard/>
         </div>
     );
 };
