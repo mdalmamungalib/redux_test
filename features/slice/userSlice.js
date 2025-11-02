@@ -1,7 +1,10 @@
-const { createSlice, nanoid } = require("@reduxjs/toolkit");
+const { createSlice, nanoid, current } = require("@reduxjs/toolkit");
 
 const initialState = {
-  employees: [],
+  employees:
+    typeof window !== "undefined" && window.localStorage.getItem("emp")
+      ? JSON.parse(window.localStorage.getItem("emp"))
+      : [],
 };
 
 const userSlice = createSlice({
@@ -9,14 +12,19 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addEmployee: (state, action) => {
-      console.log("userSlice",action)
+      console.log("userSlice", action);
       state.employees.push(action.payload);
+      let emp = JSON.stringify(current(state.employees));
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("emp", emp);
+      }
     },
     removeEmployee: (state, action) => {
       state.employees = state.employees.filter((item) => {
-        return item.id !== action.payload
-      })
-    }
+        return item.id !== action.payload;
+      });
+      window.localStorage.setItem("emp", JSON.stringify(state.employees));
+    },
   },
 });
 
