@@ -5,16 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { MdFolderDelete } from "react-icons/md";
 import { addStudent, removeStudent } from "@/features/slice/studentSlice";
-import { addEmployee, removeEmployee } from "@/features/slice/userSlice";
 
-export default function UserManagementDashboard() {
+export default function StudentManagement() {
   const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newUser, setNewUser] = useState({ name: "", email: "", avatar: "" });
 
-  const employeeData = useSelector((state) => state.userSlice.employees) || [];
+  const studentData = useSelector((state) => state.studentSlice.students )|| [];
+  console.log(studentData)
 
   // Simulate data loading
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function UserManagementDashboard() {
       id: nanoid(),
     };
     console.log(userWithId);
-    dispatch(addEmployee(userWithId));
+    dispatch(addStudent(userWithId));
     setShowModal(false);
     setNewUser({
       name: "",
@@ -66,7 +66,7 @@ export default function UserManagementDashboard() {
       <div className="mx-auto max-w-7xl">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 md:text-4xl dark:text-white">
-            Employee Management
+            Student Management
           </h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             Manage your team members and their permissions
@@ -83,7 +83,7 @@ export default function UserManagementDashboard() {
               whileTap={{ scale: 0.98 }}
               className="px-4 py-2 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
               onClick={() => setShowModal(true)}>
-              Add Employee
+              Add Student
             </motion.button>
           </div>
 
@@ -95,7 +95,7 @@ export default function UserManagementDashboard() {
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4 mt-8 md:grid-cols-2 lg:grid-cols-3">
-              {employeeData.map((user) => (
+              {studentData.map((user) => (
                 <UserCard key={user.id} user={user} />
               ))}
             </div>
@@ -118,7 +118,7 @@ export default function UserManagementDashboard() {
 }
 
 function UserCard({ user }) {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -140,7 +140,7 @@ function UserCard({ user }) {
         <div className="relative inline-block">
           <button
             type="button"
-            onClick={() => dispatch(removeEmployee(user?.id))}
+            onClick={() => dispatch(removeStudent(user?.id))}
             aria-label="Delete folder"
             className={
               "inline-flex items-center justify-center w-10 h-10 rounded-lg transition-transform transition-shadow " +
@@ -193,7 +193,7 @@ function AddUserModal({ newUser, setNewUser, handleSubmit, onClose }) {
         className="w-full max-w-md p-6 bg-white rounded-lg dark:bg-gray-800"
         onClick={(e) => e.stopPropagation()}>
         <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-          Add New Employee
+          Add New Student
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -232,7 +232,7 @@ function AddUserModal({ newUser, setNewUser, handleSubmit, onClose }) {
             <button
               type="submit"
               className="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-              Add Employee
+              Add Student
             </button>
           </div>
         </form>

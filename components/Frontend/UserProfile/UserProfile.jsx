@@ -9,7 +9,7 @@ const UserProfile = ({ user }) => {
   const [activeTab, setActiveTab] = useState('profile')
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-4xl mx-auto">
         
         {/* Header with back navigation */}
@@ -27,7 +27,7 @@ const UserProfile = ({ user }) => {
 
         {/* Main content card */}
         <motion.div 
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
+          className="overflow-hidden bg-white shadow-xl dark:bg-gray-800 rounded-2xl"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -36,12 +36,12 @@ const UserProfile = ({ user }) => {
           {/* Profile header with image and basic info */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
-              <div className="relative h-20 w-20 mr-4">
+              <div className="relative w-20 h-20 mr-4">
                 <Image
                   src={`https://i.pravatar.cc/150?u=${user.id}`}
                   alt={user.name}
                   fill
-                  className="rounded-full object-cover"
+                  className="object-cover rounded-full"
                 />
               </div>
               <div>
@@ -53,7 +53,7 @@ const UserProfile = ({ user }) => {
 
           {/* Tab navigation */}
           <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="flex space-x-4 p-4">
+            <nav className="flex p-4 space-x-4">
               <button
                 onClick={() => setActiveTab('profile')}
                 className={`px-4 py-2 rounded-lg transition-colors ${activeTab === 'profile' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}`}
@@ -87,7 +87,7 @@ const UserProfile = ({ user }) => {
               >
                 {activeTab === 'profile' && (
                   <div>
-                    <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Contact Information</h3>
+                    <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">Contact Information</h3>
                     <div className="space-y-3">
                       <p className="text-gray-600 dark:text-gray-400">Email: {user.email}</p>
                       <p className="text-gray-600 dark:text-gray-400">Phone: {user.phone}</p>
@@ -98,16 +98,16 @@ const UserProfile = ({ user }) => {
 
                 {activeTab === 'address' && (
                   <div>
-                    <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Address</h3>
+                    <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">Address</h3>
                     <div className="space-y-2">
                       <p>{user.address.street}</p>
                       <p>{user.address.suite}</p>
                       <p>{user.address.city}, {user.address.zipcode}</p>
-                      <div className="flex space-x-2 mt-3">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 rounded text-sm">
+                      <div className="flex mt-3 space-x-2">
+                        <span className="px-2 py-1 text-sm text-blue-700 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-200">
                           Lat: {user.address.geo.lat}
                         </span>
-                        <span className="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 rounded text-sm">
+                        <span className="px-2 py-1 text-sm text-green-700 bg-green-100 rounded dark:bg-green-900 dark:text-green-200">
                           Lng: {user.address.geo.lng}
                         </span>
                       </div>
@@ -117,10 +117,10 @@ const UserProfile = ({ user }) => {
 
                 {activeTab === 'company' && (
                   <div>
-                    <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Company</h3>
+                    <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">Company</h3>
                     <p className="font-medium">{user.company.name}</p>
-                    <p className="text-gray-600 dark:text-gray-400 italic">{user.company.catchPhrase}</p>
-                    <p className="text-sm mt-2">{user.company.bs}</p>
+                    <p className="italic text-gray-600 dark:text-gray-400">{user.company.catchPhrase}</p>
+                    <p className="mt-2 text-sm">{user.company.bs}</p>
                   </div>
                 )}
               </motion.div>
@@ -131,10 +131,10 @@ const UserProfile = ({ user }) => {
           <div className="p-6 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="w-full flex items-center justify-between text-left focus:outline-none"
+              className="flex items-center justify-between w-full text-left focus:outline-none"
             >
               <span className="font-medium text-gray-900 dark:text-white">Additional Information</span>
-              <span className="transform transition-transform">{isExpanded ? '▼' : '▶'}</span>
+              <span className="transition-transform transform">{isExpanded ? '▼' : '▶'}</span>
             </button>
             
             <AnimatePresence>
