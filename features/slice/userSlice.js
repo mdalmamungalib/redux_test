@@ -25,8 +25,21 @@ const userSlice = createSlice({
       });
       window.localStorage.setItem("emp", JSON.stringify(state.employees));
     },
+    editEmployee: (state, action) => {
+      const updated = action.payload;
+      const idx = state.employees.findIndex((e) => e.id === updated.id);
+      if (idx !== -1) {
+        state.employees[idx] = updated;
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(
+            "emp",
+            JSON.stringify(current(state.employees))
+          );
+        }
+      }
+    },
   },
 });
 
-export const { addEmployee, removeEmployee } = userSlice.actions;
+export const { addEmployee, removeEmployee, editEmployee } = userSlice.actions;
 export default userSlice.reducer;

@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   usersApiData: [],
 };
+
 export const getUserData = createAsyncThunk("getUserData", async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/users");
   return await response.json();
