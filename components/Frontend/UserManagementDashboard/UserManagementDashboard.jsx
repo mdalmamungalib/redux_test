@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { MdFolderDelete } from "react-icons/md";
-import { addStudent, removeStudent } from "@/features/slice/studentSlice";
 import {
   addEmployee,
   editEmployee,
@@ -49,7 +48,6 @@ export default function UserManagementDashboard() {
     }, 1500);
   }, []);
 
-  // ...existing code...
   const handleSubmit = (e) => {
     e.preventDefault();
     const userWithId = {
@@ -70,7 +68,6 @@ export default function UserManagementDashboard() {
     });
     setEditingId(null);
   };
-  // ...existing code...
 
   return (
     <div className="min-h-screen p-4 bg-gray-50 dark:bg-gray-900 md:p-8">
@@ -136,7 +133,7 @@ export default function UserManagementDashboard() {
   );
 }
 
-function UserCard({ user, setNewUser, setEditingId, setShowModal, editingId }) {
+function UserCard({ user, setNewUser, setEditingId, setShowModal }) {
   const dispatch = useDispatch();
   const handleEditClick = (user) => {
     setNewUser({

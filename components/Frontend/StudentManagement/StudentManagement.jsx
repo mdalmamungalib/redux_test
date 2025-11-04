@@ -4,17 +4,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { MdFolderDelete } from "react-icons/md";
-import { addStudent, removeStudent } from "@/features/slice/studentSlice";
+import { addStudent, editStudent, removeStudent } from "@/features/slice/studentSlice";
+import { CiEdit } from "react-icons/ci";
 
 export default function StudentManagement() {
   const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState("");
   const [newUser, setNewUser] = useState({ name: "", email: "", avatar: "" });
 
-  const studentData = useSelector((state) => state.studentSlice.students )|| [];
-  console.log(studentData)
+  const studentData = useSelector((state) => state.studentSlice.students) || [];
+  console.log(studentData);
 
   // Simulate data loading
   useEffect(() => {
@@ -48,16 +50,20 @@ export default function StudentManagement() {
     e.preventDefault();
     const userWithId = {
       ...newUser,
-      id: nanoid(),
+      id: editingId || nanoid(),
     };
-    console.log(userWithId);
-    dispatch(addStudent(userWithId));
+    if(editingId){
+      dispatch(editStudent(userWithId))
+    } else{
+      dispatch(addStudent(userWithId));
+    }
     setShowModal(false);
     setNewUser({
       name: "",
       email: "",
       avatar: "",
     });
+    setEditingId(null)
   };
   // ...existing code...
 
@@ -96,7 +102,13 @@ export default function StudentManagement() {
           ) : (
             <div className="grid grid-cols-1 gap-4 mt-8 md:grid-cols-2 lg:grid-cols-3">
               {studentData.map((user) => (
-                <UserCard key={user.id} user={user} />
+                <UserCard
+                  key={user.id}
+                  user={user}
+                  setNewUser={setNewUser}
+                  setEditingId={setEditingId}
+                  setShowModal={setShowModal}
+                />
               ))}
             </div>
           )}
@@ -109,6 +121,7 @@ export default function StudentManagement() {
               setNewUser={setNewUser}
               handleSubmit={handleSubmit}
               onClose={() => setShowModal(false)}
+              editingId={editingId}
             />
           )}
         </AnimatePresence>
@@ -117,8 +130,18 @@ export default function StudentManagement() {
   );
 }
 
-function UserCard({ user }) {
-    const dispatch = useDispatch();
+function UserCard({ user, setNewUser, setEditingId, setShowModal }) {
+  const dispatch = useDispatch();
+  const handleEditClick = (user) => {
+    setNewUser({
+      name: user.name || "",
+      email: user.email || "",
+      avatar: user.avatar || "",
+    })
+    setEditingId(user.id);
+    setShowModal(true)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -153,6 +176,21 @@ function UserCard({ user }) {
               aria-hidden="true"
             />
           </button>
+          <button
+            type="button"
+            onClick={() => (handleEditClick ? handleEditClick(user) : null)}
+            aria-label="Delete folder"
+            className={
+              "inline-flex items-center justify-center w-10 h-10 rounded-lg transition-transform transition-shadow " +
+              "bg-slate-100 hover:bg-red-50 dark:bg-slate-700 dark:hover:bg-red-900 " +
+              "shadow-sm hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 " +
+              "focus-visible:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed group"
+            }>
+            <CiEdit
+              className="w-8 h-8 text-indigo-700 transition-colors transform group-hover:text-indigo-600 dark:text-slate-200 dark:group-hover:indigo-red-400 group-hover:scale-110"
+              aria-hidden="true"
+            />
+          </button>
 
           {/* Tooltip */}
           <span className="absolute px-2 py-1 mb-2 text-xs text-white transition-opacity -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none left-1/2 bottom-full group-hover:opacity-100">
@@ -178,7 +216,7 @@ function UserCardSkeleton() {
   );
 }
 
-function AddUserModal({ newUser, setNewUser, handleSubmit, onClose }) {
+function AddUserModal({ newUser, setNewUser, handleSubmit, onClose, editingId }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -232,7 +270,7 @@ function AddUserModal({ newUser, setNewUser, handleSubmit, onClose }) {
             <button
               type="submit"
               className="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-              Add Student
+              {editingId ? "Save Changes" : "Add Student"}
             </button>
           </div>
         </form>
